@@ -47,9 +47,11 @@ export class ChatRoom implements IChatRoom {
     Misc.isUserInChatroom(user, this.userList);
 
     const [usr] = this.userList.filter((usr) => usr.id === user.id);
-    this.deleteUser(usr);
+   
     const newSuperuser = this.fromUsertoSuperuser(usr);
     this.userList.push(newSuperuser);
+
+    this.deleteUser(usr);
   }
   deleteUser(user: IUser): void {
     const newUserList = this.userList.filter(
