@@ -9,6 +9,7 @@ export class Misc {
   }
 
   static isPasswordValid(pass: string): void {
+    this.isStringEmpty(pass);
     const re = /(?=.*\d)(?=.*[A-Z])(?=.*[!@#$%^&*()]).{8,}/;
     is.setRegexp(re, "alphaNumeric");
     if (is.not.alphaNumeric(pass))

@@ -35,14 +35,14 @@ export class User implements IUser {
     Misc.isEmailValid(email);
     Misc.isStringEmpty(name);
     Misc.isStringEmpty(surname);
+    Misc.isPasswordValid(password);
+    Misc.genderCheck(gender);
     this.id = uuidv4();
     this.name = name;
     this.surname = surname;
     this.birthDate = Misc.dateCheck(birthDate);
     this.password = password;
-    Misc.isPasswordValid(this.password);
     this.gender = gender;
-    Misc.genderCheck(this.gender);
     this.email = email;
     this.accessLevel = "user";
   }

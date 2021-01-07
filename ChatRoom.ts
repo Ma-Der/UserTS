@@ -10,7 +10,7 @@ export interface IChatRoom {
   editUserPassword(superuser: SuperUser, user: IUser, password: string): void;
   editUserAccessLevel(superuser: SuperUser, user: IUser): void;
   deleteUser(user: IUser): void;
-  fromUsertoSuperuser(user: IUser): SuperUser;
+  _fromUsertoSuperuser(user: IUser): SuperUser;
 }
 
 export class ChatRoom implements IChatRoom {
@@ -20,6 +20,13 @@ export class ChatRoom implements IChatRoom {
   }
 
   addUser(...user: IUser[]): void {
+    user.forEach(usr => {
+      this.userList.forEach(element => {
+        if(element.id === usr.id) {
+          throw new Error('User is already in chat room.');
+        }
+      })
+    });
     this.userList.push(...user);
   }
 
@@ -48,19 +55,21 @@ export class ChatRoom implements IChatRoom {
 
     const [usr] = this.userList.filter((usr) => usr.id === user.id);
    
-    const newSuperuser = this.fromUsertoSuperuser(usr);
-    this.userList.push(newSuperuser);
-
+    const newSuperuser = this._fromUsertoSuperuser(usr);
     this.deleteUser(usr);
+    this.userList.push(newSuperuser);
   }
   deleteUser(user: IUser): void {
+    Misc.isUserInChatroom(user, this.userList);
     const newUserList = this.userList.filter(
       (userOnList) => userOnList.id !== user.id
     );
     this.userList = newUserList;
   }
 
-  fromUsertoSuperuser(user: IUser): SuperUser {
+  _fromUsertoSuperuser(user: IUser): SuperUser {
+    Misc.isUserInChatroom(user, this.userList);
+
     const newSuperuser = new SuperUser(
       user.name,
       user.surname,
@@ -71,7 +80,6 @@ export class ChatRoom implements IChatRoom {
     );
 
     newSuperuser.id = user.id;
-
     return newSuperuser;
   }
 }
