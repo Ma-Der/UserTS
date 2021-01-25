@@ -44,22 +44,23 @@ export class Misc {
   }
 
   static dateCheck(input: number | string | Date): string {
+    
     switch (true) {
       case typeof input === "number":
         if (is.nan(input)) throw new Error("Input should be a number.");
         const num = moment().dayOfYear(+input);
-        return num.format("MM/DD/YYYY");
+        return num.format("MM-DD-YYYY");
 
       case typeof input === "string":
-        if (moment(input).format("MM/DD/YYYY") === "Invalid date")
-          throw new Error("Invalid date. Date format should be - MM/DD/YYYY");
-        return moment(input).format("MM/DD/YYYY");
+        if (moment(input).format("MM-DD-YYYY") === "Invalid date")
+          throw new Error("Invalid date. Date format should be - MM-DD-YYYY");
+        return moment(input).format("MM-DD-YYYY");
 
       case moment.isDate(input):
         if (is.nan(moment(input).valueOf())) throw new Error("Invalid date.");
-        return moment(input).format("MM/DD/YYYY");
+        return moment(input).format("MM-DD-YYYY");
       default:
-        return moment().format("MM/DD/YYYY");
+        return moment(input).format("MM-DD-YYYY");
     }
   }
 }
